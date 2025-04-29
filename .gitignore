@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+
+# Environment
+.env
+*.env
+
+# SQLite DB
+*.sqlite3
+db.sqlite3
+
+# Flask/Misc
+instance/
+*.log
+
+# VS Code / IDEs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Byte-compiled / backup files
+*.bak
+*.tmp
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# PIP
+pip-log.txt
+
+# PyInstaller
+dist/
+build/
+*.spec
