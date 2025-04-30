@@ -116,7 +116,14 @@
                         <div class="tab-pane fade" id="interaction" role="tabpanel" aria-labelledby="interaction-tab">
                             <div class="form-group">
                                 {{ form.interaction_category.label(class="form-label") }}
-                                {{ form.interaction_category(class="form-control") }}
+                                {% for subfield in form.interaction_category %}
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ subfield.name }}" value="{{ subfield.value }}">
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
                             </div>
                             <div class="form-group">
                                 {{ form.g2g_beneficiary_count.label(class="form-label") }}
