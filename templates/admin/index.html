@@ -1,0 +1,14 @@
+{% extends 'admin/master.html' %}
+
+{% block navbar %}
+  {{ super() }}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+  </li>
+{% endblock %}
+
+{% block body %}
+  <h1>Welcome to the Admin Dashboard</h1>
+  <p>This is a simple admin dashboard template.</p>
+  <a class="btn btn-secondary" href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}

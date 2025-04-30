@@ -61,10 +61,6 @@ class AdminModelView(ModelView):
 class EntityModelView(ModelView):
     form_columns = ['name', 'category', 'sector', 'contact_name', 'contact_position', 'contact_phone', 'contact_email']
 
-    # Customize how the signed service link is displayed in the list view
-    column_formatters = {
-        'signed_service_link': lambda v, c, m, p: f'<a href="{m.signed_service_link}" target="_blank">Add Service</a>'
-    }
 
     def on_model_change(self, form, model:Entity, is_created):
         """Override to generate signed link when creating a new entity."""

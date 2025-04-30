@@ -19,7 +19,21 @@
             </a>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="{{ url_for('thank_you') }}" class="nav-link">Exit</a>
+                    <div class="dropdown"></div>
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="https://i.pravatar.cc/40" alt="User Avatar" class="img-circle" style="width: 30px; height: 30px;">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <div class="dropdown-item text-center">
+                                <img src="https://i.pravatar.cc/40" alt="User Avatar" class="img-circle mb-2" style="width: 60px; height: 60px;">
+                                <p class="mb-1"><strong>{{ entity.contact_name }}</strong></p>
+                                <p class="text-muted mb-0 text-left">{{ entity.contact_email }}</p>
+                                <p class="text-muted text-left">{{ entity.contact_phone }}</p>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center text-danger" href="{{ url_for('thank_you') }}">Logout</a>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -32,22 +46,6 @@
                 <div class="row mb-2">
                     <div class="col-sm-12">
                         <h1 class="m-0"> {{entity.name}} Services</h1>
-                    </div>
-                    <div class="col-sm-12 mt-2">
-                        <h6>
-                            Contact Person
-                        </h6>
-                        <ul class="list-unstyled">
-                            <li>
-                                <strong>Name:</strong> {{ entity.contact_name }}
-                            </li>
-                            <li>
-                                <strong>Email:</strong> {{ entity.contact_email }}
-                            </li>
-                            <li>
-                                <strong>Phone:</strong> {{ entity.contact_phone }}
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -94,7 +92,7 @@
 
 <!-- Modal for Adding Service -->
 <div class="modal fade" id="addServiceModal" tabindex="-1" role="dialog" aria-labelledby="addServiceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form method="POST" action="{{ url_for('add_service', signed_url=signed_url) }}">
                 {{ form.hidden_tag() }}
@@ -118,9 +116,18 @@
                         <li class="nav-item">
                             <a class="nav-link" id="support-tab" data-toggle="tab" href="#support" role="tab" aria-controls="support" aria-selected="false">Support Channels</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="access-tab" data-toggle="tab" href="#access" role="tab" aria-controls="access" aria-selected="false">Access Mode</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="system-details-tab" data-toggle="tab" href="#system-details" role="tab" aria-controls="kpi" aria-selected="false">System Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="remarks-tab" data-toggle="tab" href="#remarks" role="tab" aria-controls="remarks" aria-selected="false">Remarks</a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="serviceFormTabsContent">
-                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <div class="tab-pane fade show active pt-3" id="general" role="tabpanel" aria-labelledby="general-tab">
                             <div class="form-group">
                                 {{ form.service_name.label(class="form-label") }}
                                 {{ form.service_name(class="form-control") }}
@@ -130,7 +137,7 @@
                                 {{ form.description(class="form-control") }}
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="interaction" role="tabpanel" aria-labelledby="interaction-tab">
+                        <div class="tab-pane fade pt-3" id="interaction" role="tabpanel" aria-labelledby="interaction-tab">
                             <div class="form-group">
                                 {{ form.interaction_category.label(class="form-label") }}
                                 {% for subfield in form.interaction_category %}
@@ -163,7 +170,7 @@
                                 {{ form.kpi_details(class="form-control") }}
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+                        <div class="tab-pane fade pt-3" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                             <div class="form-group">
                                 {{ form.standard_duration.label(class="form-label") }}
                                 {{ form.standard_duration(class="form-control") }}
@@ -193,7 +200,7 @@
                                 {{ form.customer_satisfaction_rating(class="form-control") }}
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="support" role="tabpanel" aria-labelledby="support-tab">
+                        <div class="tab-pane fade pt-3" id="support" role="tabpanel" aria-labelledby="support-tab">
                             <div class="form-group form-check">
                                 {{ form.support_available(class="form-check-input") }}
                                 {{ form.support_available.label(class="form-check-label") }}
@@ -218,11 +225,100 @@
                                 {{ form.support_social_media(class="form-check-input") }}
                                 {{ form.support_social_media.label(class="form-check-label") }}
                             </div>
+                        </div>
+                        <div class="tab-pane fade pt-3" id="access" role="tabpanel" aria-labelledby="access-tab">
+                            <div class="form-group form-check">
+                                {{ form.access_mode.label(class="form-label") }}
+                                {% for subfield in form.access_mode %}
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ subfield.name }}" value="{{ subfield.value }}">
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.access_website(class="form-check-input") }}
+                                {{ form.access_website.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.access_mobile_app(class="form-check-input") }}
+                                {{ form.access_mobile_app.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.access_ussd(class="form-check-input") }}
+                                {{ form.access_ussd.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.access_physical_office(class="form-check-input") }}
+                                {{ form.access_physical_office.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.requires_internet(class="form-check-input") }}
+                                {{ form.requires_internet.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.self_service_available(class="form-check-input") }}
+                                {{ form.self_service_available.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade pt-3" id="system-details" role="tabpanel" aria-labelledby="system-details-tab">
+                            <div class="form-group form-check">
+                                {{ form.supported_by_it_system(class="form-check-input") }}
+                                {{ form.supported_by_it_system.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.system_name.label(class="form-label") }}
+                                {{ form.system_name(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.system_launch_date.label(class="form-label") }}
+                                {{ form.system_launch_date(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.system_version.label(class="form-label") }}
+                                {{ form.system_version(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.system_last_update.label(class="form-label") }}
+                                {{ form.system_last_update(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.system_target_uptime.label(class="form-label") }}
+                                {{ form.system_target_uptime(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.system_actual_uptime.label(class="form-label") }}
+                                {{ form.system_actual_uptime(class="form-control") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.complies_with_standards(class="form-check-input") }}
+                                {{ form.complies_with_standards.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.standards_details.label(class="form-label") }}
+                                {{ form.standards_details(class="form-control") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.system_integrated(class="form-check-input") }}
+                                {{ form.system_integrated.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.integrated_systems.label(class="form-label") }}
+                                {{ form.integrated_systems(class="form-control") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.planned_automation(class="form-check-input") }}
+                                {{ form.planned_automation.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade pt-3" id="remarks" role="tabpanel" aria-labelledby="remarks-tab">
                             <div class="form-group">
                                 {{ form.comments.label(class="form-label") }}
                                 {{ form.comments(class="form-control") }}
                             </div>
-                        </div>
+                        </div>                
                     </div>
                 </div>
                 <div class="modal-footer">
