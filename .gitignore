@@ -12,6 +12,7 @@ __pycache__/
 # SQLite DB
 *.sqlite3
 db.sqlite3
+services.db
 
 # Flask/Misc
 instance/
@@ -38,3 +39,5 @@ pip-log.txt
 dist/
 build/
 *.spec
+
+venv/

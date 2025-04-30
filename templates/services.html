@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <!-- Include Bootstrap and AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <!-- Top Navigation Bar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <div class="container">
+            <a href="#" class="navbar-brand">
+                <span class="brand-text font-weight-light">GSA DATA COLLECTION Tool</span>
+            </a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="{{ url_for('thank_you') }}" class="nav-link">Exit</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Services</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">List of Services</h3>
+                        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#addServiceModal">Add Service</button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Interaction Category</th>
+                                    <th>Access Mode</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for service in services %}
+                                <tr>
+                                    <td>{{ service.name }}</td>
+                                    <td>{{ service.description }}</td>
+                                    <td>{{ service.interaction_category }}</td>
+                                    <td>{{ service.access_mode }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer text-center">
+        <strong>All rights reserved to NITA-U</strong>
+    </footer>
+</div>
+
+<!-- Modal for Adding Service -->
+<div class="modal fade" id="addServiceModal" tabindex="-1" role="dialog" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('add_service', signed_url=signed_url) }}">
+                {{ form.hidden_tag() }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addServiceModalLabel">Add Service</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="serviceFormTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="interaction-tab" data-toggle="tab" href="#interaction" role="tab" aria-controls="interaction" aria-selected="false">Interaction Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="delivery-tab" data-toggle="tab" href="#delivery" role="tab" aria-controls="delivery" aria-selected="false">Delivery Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="support-tab" data-toggle="tab" href="#support" role="tab" aria-controls="support" aria-selected="false">Support Channels</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="serviceFormTabsContent">
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="form-group">
+                                {{ form.service_name.label(class="form-label") }}
+                                {{ form.service_name(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.description.label(class="form-label") }}
+                                {{ form.description(class="form-control") }}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="interaction" role="tabpanel" aria-labelledby="interaction-tab">
+                            <div class="form-group">
+                                {{ form.interaction_category.label(class="form-label") }}
+                                {{ form.interaction_category(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.g2g_beneficiary_count.label(class="form-label") }}
+                                {{ form.g2g_beneficiary_count(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.geographic_reach.label(class="form-label") }}
+                                {{ form.geographic_reach(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.process_flow.label(class="form-label") }}
+                                {{ form.process_flow(class="form-control") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.has_kpi(class="form-check-input") }}
+                                {{ form.has_kpi.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.kpi_details.label(class="form-label") }}
+                                {{ form.kpi_details(class="form-control") }}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+                            <div class="form-group">
+                                {{ form.standard_duration.label(class="form-label") }}
+                                {{ form.standard_duration(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.actual_duration.label(class="form-label") }}
+                                {{ form.actual_duration(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.users_total.label(class="form-label") }}
+                                {{ form.users_total(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.users_female.label(class="form-label") }}
+                                {{ form.users_female(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.users_male.label(class="form-label") }}
+                                {{ form.users_male(class="form-control") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.customer_satisfaction_measured(class="form-check-input") }}
+                                {{ form.customer_satisfaction_measured.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.customer_satisfaction_rating.label(class="form-label") }}
+                                {{ form.customer_satisfaction_rating(class="form-control") }}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="support" role="tabpanel" aria-labelledby="support-tab">
+                            <div class="form-group form-check">
+                                {{ form.support_available(class="form-check-input") }}
+                                {{ form.support_available.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.support_help_desk(class="form-check-input") }}
+                                {{ form.support_help_desk.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.support_call_center(class="form-check-input") }}
+                                {{ form.support_call_center.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.support_online_chat(class="form-check-input") }}
+                                {{ form.support_online_chat.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.support_email(class="form-check-input") }}
+                                {{ form.support_email.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group form-check">
+                                {{ form.support_social_media(class="form-check-input") }}
+                                {{ form.support_social_media.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap and AdminLTE JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+</body>
+</html>
