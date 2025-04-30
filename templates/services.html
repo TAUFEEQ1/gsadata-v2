@@ -7,6 +7,7 @@
     <!-- Include Bootstrap and AdminLTE CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
@@ -29,8 +30,24 @@
         <div class="content-header">
             <div class="container">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Services</h1>
+                    <div class="col-sm-12">
+                        <h1 class="m-0"> {{entity.name}} Services</h1>
+                    </div>
+                    <div class="col-sm-12 mt-2">
+                        <h6>
+                            Contact Person
+                        </h6>
+                        <ul class="list-unstyled">
+                            <li>
+                                <strong>Name:</strong> {{ entity.contact_name }}
+                            </li>
+                            <li>
+                                <strong>Email:</strong> {{ entity.contact_email }}
+                            </li>
+                            <li>
+                                <strong>Phone:</strong> {{ entity.contact_phone }}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -200,6 +217,10 @@
                             <div class="form-group form-check">
                                 {{ form.support_social_media(class="form-check-input") }}
                                 {{ form.support_social_media.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.comments.label(class="form-label") }}
+                                {{ form.comments(class="form-control") }}
                             </div>
                         </div>
                     </div>

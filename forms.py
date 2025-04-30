@@ -14,7 +14,14 @@ class ServiceForm(FlaskForm):
         validators=[DataRequired()],
     )
     g2g_beneficiary_count = IntegerField('If G2G, how many entities benefit from the service? (All entities benefiting including the host entity)', validators=[Optional()])
-    geographic_reach = SelectField('At what level is this service primarily delivered? (Targeted Geographic_Reach)?- Select one', validators=[Optional()])
+    geographic_reach = SelectField('At what level is this service primarily delivered? (Targeted Geographic_Reach)?- Select one',
+                                   choices=[
+                                       ('National', 'National'),
+                                       ('Regional', 'Regional'),
+                                       ('Local', 'Local'),
+                                       ('Global', 'Global'),
+                                   ],
+                                    validators=[Optional()])
     process_flow = TextAreaField('What are the key steps a user must follow to access and complete this service (process flow of the service)? Please include all stages, from the initial request to fulfillment', validators=[DataRequired()])
     has_kpi = BooleanField('Does service have Key Performance Indicators (KPI)? (Yes, No)', default=False)
     kpi_details = TextAreaField('If Yes, list the KPIs', validators=[Optional()])
