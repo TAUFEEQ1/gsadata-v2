@@ -5,3 +5,4 @@ itsdangerous
 Flask-Migrate
 Flask-WTF
 Flask-Login
+gunicorn
