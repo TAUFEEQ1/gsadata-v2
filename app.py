@@ -140,7 +140,7 @@ def add_service(signed_url):
                 entity_id=entity.id,
                 service_name=form.service_name.data,
                 description=form.description.data,
-                interaction_category=form.interaction_category.data,
+                interaction_category=','.join(form.interaction_category.data),
                 g2g_beneficiary_count=form.g2g_beneficiary_count.data,
                 geographic_reach=form.geographic_reach.data,
                 process_flow=form.process_flow.data,

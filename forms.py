@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, IntegerField, BooleanField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Optional
+from wtforms.validators import DataRequired, Optional,InputRequired
 
 
 class ServiceForm(FlaskForm):
@@ -14,7 +14,8 @@ class ServiceForm(FlaskForm):
                                                    ('G2B', 'Government to Business (G2B)'),
                                                    ('G2C', 'Government to Citizen (G2C)'),
                                                ],
-                                               validators=[DataRequired()],
+                                               coerce=str,
+                                               validators=[InputRequired()],
                                                description="This aims to identify the target user of the service. This will be dissagregated according to; Government to Government (G2G), Government to Business (G2B) and Government to Citizen (G2C). Select all options that apply"
                                                )
     g2g_beneficiary_count = IntegerField(
