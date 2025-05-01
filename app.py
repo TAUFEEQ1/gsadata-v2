@@ -178,10 +178,13 @@ def add_service(signed_url):
                 comments=form.comments.data
             )
 
-        db.session.add(service)
-        db.session.commit()
-        flash("Service added successfully!", "success")  # Move flash message here
-        return redirect(url_for('add_service', signed_url=signed_url))
+            db.session.add(service)
+            db.session.commit()
+            flash("Service added successfully!", "success")  # Move flash message here
+            return redirect(url_for('add_service', signed_url=signed_url))
+        else:
+            flash("Please correct the errors in the form.", "danger")
+            return render_template('services.html', entity=entity, services=services, signed_url=signed_url, form=form)
 
     form  = ServiceForm()
     # list of all services for the entity
