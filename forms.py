@@ -114,3 +114,45 @@ class ServiceForm(FlaskForm):
         'If the service is not supported by an IT system, is there a plan to automate it?', default=False)
 
     comments = TextAreaField('Additional Comments', validators=[Optional()])
+
+    def validate(self):
+        if not super(ServiceForm, self).validate():
+            return False
+
+        # Conditional validation for 'kpi_details' if 'has_kpi' is True
+        if self.has_kpi.data and not self.kpi_details.data:
+            self.kpi_details.errors.append('This field is required when "Has KPI" is selected.')
+            return False
+
+        # Conditional validation for 'system_name' if 'supported_by_it_system' is True
+        if self.supported_by_it_system.data and not self.system_name.data:
+            self.system_name.errors.append('This field is required when "Supported by IT System" is selected.')
+            return False
+
+        # Conditional validation for 'integrated_systems' if 'system_integrated' is True
+        if self.system_integrated.data and not self.integrated_systems.data:
+            self.integrated_systems.errors.append('This field is required when "System Integrated" is selected.')
+            return False
+        
+        # Conditional validation for 'g2g_beneficiary_count' if 'G2G' is selected in 'interaction_category'
+        if 'G2G' in self.interaction_category.data and not self.g2g_beneficiary_count.data:
+            self.g2g_beneficiary_count.errors.append('This field is required when "G2G" is selected in Interaction Category.')
+            return False
+        
+        # Conditional validation for 'customer_satisfaction_rating' if 'customer_satisfaction_measured' is True
+        if self.customer_satisfaction_measured.data and not self.customer_satisfaction_rating.data:
+            self.customer_satisfaction_rating.errors.append('This field is required when "Customer Satisfaction Measured" is selected.')
+            return False
+
+        # Conditional validation for 'standards_details' if 'complies_with_standards' is True
+        if self.complies_with_standards.data and not self.standards_details.data:
+            self.standards_details.errors.append('This field is required when "Complies with Standards" is selected.')
+            return False
+
+
+        # Conditional validation for 'integrated_systems' if 'system_integrated' is True
+        if self.system_integrated.data and not self.integrated_systems.data:
+            self.integrated_systems.errors.append('This field is required when "System Integrated" is selected.')
+            return False
+
+        return True
