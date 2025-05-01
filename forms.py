@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, IntegerField, BooleanField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Optional,InputRequired
+from wtforms.validators import DataRequired, Optional,InputRequired,NumberRange
 
 
 class ServiceForm(FlaskForm):
@@ -19,7 +19,7 @@ class ServiceForm(FlaskForm):
                                                description="This aims to identify the target user of the service. This will be dissagregated according to; Government to Government (G2G), Government to Business (G2B) and Government to Citizen (G2C). Select all options that apply"
                                                )
     g2g_beneficiary_count = IntegerField(
-        'If G2G, how many entities benefit from the service? (All entities benefiting including the host entity)', validators=[Optional()])
+        'If G2G, how many entities benefit from the service? (All entities benefiting including the host entity)', validators=[Optional(),NumberRange(min=0, message="Please enter a positive number")])
     geographic_reach = SelectField('At what level is this service primarily delivered? (Targeted Geographic_Reach)?- Select one',
                                    choices=[
                                        ('National', 'National'),
@@ -40,11 +40,12 @@ class ServiceForm(FlaskForm):
     actual_duration = StringField(
         'What is the actual average duration taken to deliver the service from the time it is requested to its completion? (Recode average time in; seconds, minutes, hours, days, weeks, months)- ', validators=[Optional()],description="Refers to the duration between when a user requests a service and when the service is fully delivered or completed. This could be in seconds, minutes, hours, days, weeks or months. Here, indicate the servce standard turnaround time and actual turn around time")
     users_total = IntegerField(
-        'What is the average or cumulative number of users of the service (Total)', validators=[Optional()])
+        'What is the average or cumulative number of users of the service (Total)', validators=[Optional(),NumberRange(min=0, message="Please enter a positive number")])
+    
     users_female = IntegerField(
-        'What is the average or cumulative number of female users of the service?', validators=[Optional()])
+        'What is the average or cumulative number of female users of the service?', validators=[Optional(),NumberRange(min=0, message="Please enter a positive number")])
     users_male = IntegerField(
-        'What is the average or cumulative number of male users of the service?', validators=[Optional()])
+        'What is the average or cumulative number of male users of the service?', validators=[Optional(),NumberRange(min=0, message="Please enter a positive number")])
     customer_satisfaction_measured = BooleanField(
         'Has customer satisfaction been measured for the service before? (Yes, No)', default=False)
     customer_satisfaction_rating = StringField(

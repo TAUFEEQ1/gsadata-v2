@@ -186,7 +186,6 @@ def add_service(signed_url):
             flash("Service added successfully!", "success")  # Move flash message here
             return redirect(url_for('add_service', signed_url=signed_url))
         else:
-            flash("Please correct the errors in the form.", "danger")
             return render_template('services.html', entity=entity, services=services, signed_url=signed_url, form=form)
 
     form  = ServiceForm()
