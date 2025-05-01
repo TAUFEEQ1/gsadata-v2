@@ -62,18 +62,16 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Description</th>
                                     <th>Interaction Category</th>
-                                    <th>Access Mode</th>
+                                    <th>Total Users</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for service in services %}
                                 <tr>
                                     <td>{{ service.name }}</td>
-                                    <td>{{ service.description }}</td>
                                     <td>{{ service.interaction_category }}</td>
-                                    <td>{{ service.access_mode }}</td>
+                                    <td>{{ service.users_total }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

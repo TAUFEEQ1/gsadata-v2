@@ -128,6 +128,9 @@ def add_service(signed_url):
         flash(f"An error occurred: {str(e)}", "danger")
         return redirect(url_for('login'))
     
+    # list of all services for the entity
+    services = Service.query.filter_by(entity_id=entity.id).all()
+    
     if request.method == 'POST':
 
         form = ServiceForm()
@@ -187,8 +190,7 @@ def add_service(signed_url):
             return render_template('services.html', entity=entity, services=services, signed_url=signed_url, form=form)
 
     form  = ServiceForm()
-    # list of all services for the entity
-    services = Service.query.filter_by(entity_id=entity.id).all()
+
 
     return render_template('services.html', entity=entity, services=services,signed_url=signed_url, form=form)
 

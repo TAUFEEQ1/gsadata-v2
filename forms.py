@@ -7,7 +7,7 @@ class ServiceForm(FlaskForm):
     service_name = StringField('Service Name', validators=[DataRequired()],
                                description="This refers to the official name of the government service delivered by the entity")
     description = TextAreaField("Service Description (a brief explanation of what a particular service is, who it is for, and what it entails)", validators=[
-                                Optional()], description="This refers to a brief explanation of what a particular service is, who it is for, and what it entails")
+                                DataRequired()], description="This refers to a brief explanation of what a particular service is, who it is for, and what it entails")
     interaction_category = SelectMultipleField("Which category best describes the nature of interaction for this service? (Select one or more options)",
                                                choices=[
                                                    ('G2G', 'Government to Government (G2G)'),
@@ -115,8 +115,8 @@ class ServiceForm(FlaskForm):
 
     comments = TextAreaField('Additional Comments', validators=[Optional()])
 
-    def validate(self):
-        if not super(ServiceForm, self).validate():
+    def validate(self,extra_validators=None):
+        if not super(ServiceForm, self).validate(extra_validators=extra_validators):
             return False
 
         # Conditional validation for 'kpi_details' if 'has_kpi' is True
