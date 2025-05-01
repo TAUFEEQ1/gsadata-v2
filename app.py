@@ -68,7 +68,7 @@ class EntityModelView(ModelView):
             # Pass the app's secret key when generating the signed URL
             if not model.signed_service_link:
                 sanitize_name= model.name.lower().replace(" ", "_")
-                model.signed_service_link = url_for('add_service', signed_url=generate_signed_url(sanitize_name), _external=True)
+                model.signed_service_link = url_for('add_service', signed_url=generate_signed_url(sanitize_name))
         # Call the parent class's method to ensure the model is saved
         return super(EntityModelView, self).on_model_change(form, model, is_created)
 
@@ -123,10 +123,10 @@ def add_service(signed_url):
     except NotFound:
         flash("Invalid or expired signed URL.", "danger")
     
-        return redirect(url_for('login'))  # Redirect to login page or any other page
+        return redirect(url_for('expired'))  # Redirect to expired page
     except Exception as e:
         flash(f"An error occurred: {str(e)}", "danger")
-        return redirect(url_for('login'))
+        return redirect(url_for('expired'))
     
     # list of all services for the entity
     services = Service.query.filter_by(entity_id=entity.id).all()
@@ -198,6 +198,10 @@ def add_service(signed_url):
 @app.route('/thank_you')
 def thank_you():
     return render_template('thank_you.html')
+
+@app.route('/expired')
+def expired():
+    return render_template('expired_link.html')
 
 # Run the app
 if __name__ == '__main__':

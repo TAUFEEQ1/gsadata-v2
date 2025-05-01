@@ -9,7 +9,7 @@ def generate_signed_url(entity_name):
     Generates a signed URL for a given entity ID.
     """
     serializer = itsdangerous.URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-    return serializer.dumps(entity_name)
+    return serializer.dumps(entity_name, salt='entity-salt')
 
 def validate_signed_url(signed_url):
     """
@@ -19,7 +19,10 @@ def validate_signed_url(signed_url):
     try:
         # Decode the signed URL token
         serializer = itsdangerous.URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-        entity_name = serializer.loads(signed_url)  # No need to specify max_age here
+         # Set expiry time to 30 days (in seconds)
+        expires_in = 60 * 60 * 24 * 30  # 30 days
+        # expires_in = 1 * 60 # 1 minute for testing
+        entity_name = serializer.loads(signed_url, salt='entity-salt', max_age=expires_in)  # Specify salt and max_age for validation
         return entity_name
     except (itsdangerous.SignatureExpired, itsdangerous.BadSignature):
         raise NotFound("Invalid or expired signed URL.")
