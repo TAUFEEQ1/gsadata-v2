@@ -69,9 +69,9 @@
                             <tbody>
                                 {% for service in services %}
                                 <tr>
-                                    <td>{{ service.name }}</td>
+                                    <td>{{ service.service_name }}</td>
                                     <td>{{ service.interaction_category }}</td>
-                                    <td>{{ service.users_total }}</td>
+                                    <td>{{ service.users_total if service.users_total is not none else 'Unknown' }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -101,6 +101,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for field, errors in form.errors.items() %}
+                                    <li>
+                                        <strong>{{ form[field].label.text }}:</strong>  <!-- Show the field label -->
+                                        {% for error in errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
                     <ul class="nav nav-tabs" id="serviceFormTabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General Information</a>
@@ -160,7 +175,7 @@
                                 <i class="fas fa-info-circle text-primary" data-toggle="tooltip" data-placement="right" title="{{ form.interaction_category.description }}"></i>
                                 {% for subfield in form.interaction_category %}
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ subfield.name }}[]" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ subfield.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
                                         <label class="form-check-label" for="{{ subfield.id }}">
                                             {{ subfield.label.text }}
                                         </label>
@@ -307,7 +322,7 @@
                                 <span class="text-danger">*</span>
                                 {% for subfield in form.access_mode %}
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ form.access_mode.name }}[]" value="{{ subfield.value }}">
+                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ form.access_mode.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
                                         <label class="form-check-label" for="{{ subfield.id }}">
                                             {{ subfield.label.text }}
                                         </label>
