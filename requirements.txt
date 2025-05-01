@@ -6,3 +6,4 @@ Flask-Migrate
 Flask-WTF
 Flask-Login
 gunicorn
+python-dotenv
