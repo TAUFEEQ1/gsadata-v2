@@ -189,11 +189,11 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% if 'G2G' in form.interaction_category.data %}
                             <div class="form-group">
                                 {{ form.g2g_beneficiary_count.label(class="form-label") }}
                                 <span class="text-danger">*</span>
                                 {{ form.g2g_beneficiary_count(class="form-control") }}
-
                                 {% if form.g2g_beneficiary_count.errors %}
                                     <div class="text-danger">
                                         {% for error in form.g2g_beneficiary_count.errors %}
@@ -202,6 +202,7 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                             <div class="form-group">
                                 {{ form.geographic_reach.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -232,6 +233,7 @@
                                 <i class="fas fa-info-circle text-primary" data-toggle="tooltip" data-placement="right" title="{{ form.has_kpi.description }}"></i>
                                 {{ form.has_kpi.label(class="form-check-label") }}
                             </div>
+                            {% if form.has_kpi.data %}
                             <div class="form-group">
                                 {{ form.kpi_details.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -244,6 +246,7 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                         </div>
                         <div class="tab-pane fade pt-3" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                             <div class="form-group">
@@ -271,6 +274,7 @@
                                 <span class="text-danger">*</span>
                                 {{ form.customer_satisfaction_measured.label(class="form-check-label") }}
                             </div>
+                            {% if form.customer_satisfaction_measured.data %}
                             <div class="form-group">
                                 {{ form.customer_satisfaction_rating.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -283,6 +287,7 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                         </div>
                         <div class="tab-pane fade pt-3" id="support" role="tabpanel" aria-labelledby="support-tab">
                             <div class="form-group form-check">
@@ -368,6 +373,7 @@
                                 <span class="text-danger">*</span>
                                 {{ form.supported_by_it_system.label(class="form-check-label") }}
                             </div>
+                            {% if form.supported_by_it_system.data %}
                             <div class="form-group">
                                 {{ form.system_name.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -380,6 +386,7 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                             <div class="form-group">
                                 {{ form.system_launch_date.label(class="form-label") }}
                                 {{ form.system_launch_date(class="form-control") }}
@@ -405,6 +412,7 @@
                                 <span class="text-danger">*</span>
                                 {{ form.complies_with_standards.label(class="form-check-label") }}
                             </div>
+                            {% if form.complies_with_standards.data %}
                             <div class="form-group">
                                 {{ form.standards_details.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -417,11 +425,13 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                             <div class="form-group form-check">
                                 {{ form.system_integrated(class="form-check-input") }}
                                 <span class="text-danger">*</span>
                                 {{ form.system_integrated.label(class="form-check-label") }}
                             </div>
+                            {% if form.system_integrated.data %}
                             <div class="form-group">
                                 {{ form.integrated_systems.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -434,6 +444,7 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                             <div class="form-group form-check">
                                 {{ form.planned_automation(class="form-check-input") }}
                                 <span class="text-danger">*</span>
@@ -464,6 +475,58 @@
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+
+        // Function to toggle visibility of fields based on conditions
+        function toggleConditionalFields() {
+            // Toggle KPI details
+            if ($('#has_kpi').is(':checked')) {
+                $('#kpi_details').closest('.form-group').show();
+            } else {
+                $('#kpi_details').closest('.form-group').hide();
+            }
+
+            // Toggle system name
+            if ($('#supported_by_it_system').is(':checked')) {
+                $('#system_name').closest('.form-group').show();
+            } else {
+                $('#system_name').closest('.form-group').hide();
+            }
+
+            // Toggle integrated systems
+            if ($('#system_integrated').is(':checked')) {
+                $('#integrated_systems').closest('.form-group').show();
+            } else {
+                $('#integrated_systems').closest('.form-group').hide();
+            }
+
+            // Toggle G2G beneficiary count
+            if ($('input[name="interaction_category"][value="G2G"]').is(':checked')) {
+                $('#g2g_beneficiary_count').closest('.form-group').show();
+            } else {
+                $('#g2g_beneficiary_count').closest('.form-group').hide();
+            }
+
+            // Toggle customer satisfaction rating
+            if ($('#customer_satisfaction_measured').is(':checked')) {
+                $('#customer_satisfaction_rating').closest('.form-group').show();
+            } else {
+                $('#customer_satisfaction_rating').closest('.form-group').hide();
+            }
+
+            // Toggle standards details
+            if ($('#complies_with_standards').is(':checked')) {
+                $('#standards_details').closest('.form-group').show();
+            } else {
+                $('#standards_details').closest('.form-group').hide();
+            }
+        }
+
+        // Initial toggle on page load
+        toggleConditionalFields();
+
+        // Event listeners for changes
+        $('#has_kpi, #supported_by_it_system, #system_integrated, #customer_satisfaction_measured, #complies_with_standards').on('change', toggleConditionalFields);
+        $('input[name="interaction_category"]').on('change', toggleConditionalFields);
     });
 </script>
 </body>
