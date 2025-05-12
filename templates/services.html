@@ -294,7 +294,7 @@
                                 {{ form.support_available_via.label(class="form-label") }}
                                 <span class="text-danger">*</span>
                                 {% for subfield in form.support_available_via %}
-                                    <div class="form-check"></div>
+                                    <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ subfield.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
                                         <label class="form-check-label" for="{{ subfield.id }}">
                                             {{ subfield.label.text }}
