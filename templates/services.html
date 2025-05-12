@@ -550,7 +550,6 @@
 
             // Toggle support details
             if($("#support_available").is(':checked')) {
-                console.log("Support available is checked");
                 $('#support_available_via').closest('.form-group').show();
             } else {
                 $('#support_available_via').closest('.form-group').hide();
@@ -561,7 +560,7 @@
         toggleConditionalFields();
 
         // Event listeners for changes
-        $('#has_kpi, #supported_by_it_system, #system_integrated, #customer_satisfaction_measured, #complies_with_standards').on('change', toggleConditionalFields);
+        $('#has_kpi, #supported_by_it_system, #system_integrated, #customer_satisfaction_measured, #complies_with_standards, #support_available').on('change', toggleConditionalFields);
         $('input[name="interaction_category"]').on('change', toggleConditionalFields);
     });
 </script>
