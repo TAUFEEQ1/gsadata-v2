@@ -108,7 +108,7 @@ class ServiceForm(FlaskForm):
         'What is the actual uptime for the IT system? (e.g., 99.9%)', validators=[Optional()])
 
     complies_with_standards = BooleanField(
-        'Does the IT system comply with any standards? (Yes, No)', default=False)
+        'Does the IT system comply with any standards (ITIL, ISO 20000, ISO 27000)? (Yes, No)', default=False)
     standards_details = TextAreaField(
         'If Yes, please provide details of the standards', validators=[Optional()])
 
