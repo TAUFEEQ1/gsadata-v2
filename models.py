@@ -92,11 +92,7 @@ class Service(db.Model):
     customer_satisfaction_rating = db.Column(db.String(100), nullable=True)
 
     support_available = db.Column(db.Boolean, default=False)
-    support_call_center = db.Column(db.Boolean, default=False)
-    support_help_desk = db.Column(db.Boolean, default=False)
-    support_online_chat = db.Column(db.Boolean, default=False)
-    support_email = db.Column(db.Boolean, default=False)
-    support_social_media = db.Column(db.Boolean, default=False)
+    support_available_via = db.Column(db.String(100), nullable=True)  # e.g., Phone, Email, Chat
 
     access_mode = db.Column(db.String(50), nullable=True)  # e.g., Digital only, Physical only, Both
 
@@ -117,7 +113,7 @@ class Service(db.Model):
     system_actual_uptime = db.Column(db.String(50), nullable=True)
     hosting_location = db.Column(db.String(255), nullable=True)  # e.g., Cloud, On-premise, Hybrid
     funding_details = db.Column(db.String(255), nullable=True)  # e.g., Government, Private, Donor-funded
-    
+
     complies_with_standards = db.Column(db.Boolean, default=False)
     standards_details = db.Column(db.Text, nullable=True)
 

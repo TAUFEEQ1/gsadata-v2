@@ -53,17 +53,19 @@ class ServiceForm(FlaskForm):
 
     support_available = BooleanField(
         'Are there exisiting support channels  available for users to access help related to the specific government service? (Yes, No)', default=False)
-    support_help_desk = BooleanField(
-        'Is there a help desk available for users to access help related to the specific government service? (Yes, No)', default=False)
-    support_call_center = BooleanField(
-        'Is there a call center available for users to access help related to the specific government service? (Yes, No)', default=False)
-    support_online_chat = BooleanField(
-        'Is there an online chat/bots available for users to access help related to the specific government service? (Yes, No)', default=False)
-    support_email = BooleanField(
-        'Is there an email available for users to access help related to the specific government service? (Yes, No)', default=False)
-
-    support_social_media = BooleanField(
-        'Is there a social media available for users to access help related to the specific government service? (Yes, No)', default=False)
+    support_available_via = SelectMultipleField(
+        'If Yes, how is support provided? (select all that apply)',
+        choices=[
+            ('Call Center', 'Call Center'),
+            ('Help Desk', 'Help Desk'),
+            ('Online Chat', 'Online Chat'),
+            ('Email', 'Email'),
+            ('Social Media', 'Social Media')
+        ],
+        coerce=str,
+        validators=[Optional()],
+        description="This refers to the channels through which users can access help or support related to the specific government service. Select all options that apply"
+    )
 
     access_mode = SelectField('How is this service accessed by users? (select any of the options; Digital Only, Physical Only or Both)',
                               choices=[
