@@ -115,7 +115,9 @@ class Service(db.Model):
     system_last_update = db.Column(db.String(20), nullable=True)
     system_target_uptime = db.Column(db.String(50), nullable=True)
     system_actual_uptime = db.Column(db.String(50), nullable=True)
-
+    hosting_location = db.Column(db.String(255), nullable=True)  # e.g., Cloud, On-premise, Hybrid
+    funding_details = db.Column(db.String(255), nullable=True)  # e.g., Government, Private, Donor-funded
+    
     complies_with_standards = db.Column(db.Boolean, default=False)
     standards_details = db.Column(db.Text, nullable=True)
 

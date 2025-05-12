@@ -316,12 +316,12 @@
                             </div>
                         </div>
                         <div class="tab-pane fade pt-3" id="access" role="tabpanel" aria-labelledby="access-tab">
-                            <div class="form-group form-check">
+                            <div class="form-group">
                                 {{ form.access_mode.label(class="form-label") }}
                                 <span class="text-danger">*</span>
                                 {% for subfield in form.access_mode %}
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ form.access_mode.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.access_mode.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
                                         <label class="form-check-label" for="{{ subfield.id }}">
                                             {{ subfield.label.text }}
                                         </label>
@@ -367,6 +367,7 @@
                                 <span class="text-danger">*</span>
                                 {{ form.supported_by_it_system.label(class="form-check-label") }}
                             </div>
+                
                             <div class="form-group">
                                 {{ form.system_name.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -398,6 +399,28 @@
                             <div class="form-group">
                                 {{ form.system_actual_uptime.label(class="form-label") }}
                                 {{ form.system_actual_uptime(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.hosting_location.label(class="form-label") }}
+                                {{ form.hosting_location(class="form-control") }}
+                                {% if form.hosting_location.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.hosting_location.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.funding_details.label(class="form-label") }}
+                                {{ form.funding_details(class="form-control") }}
+                                {% if form.funding_details.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.funding_details.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group form-check">
                                 {{ form.complies_with_standards(class="form-check-input") }}
@@ -476,8 +499,26 @@
             // Toggle system name
             if ($('#supported_by_it_system').is(':checked')) {
                 $('#system_name').closest('.form-group').show();
+                $("#system_launch_date").closest('.form-group').show();
+                $("#system_version").closest('.form-group').show();
+                $("#system_last_update").closest('.form-group').show();
+                $("#system_target_uptime").closest('.form-group').show();
+                $("#system_actual_uptime").closest('.form-group').show();  // Fixed the method call
+                $("#system_integrated").closest('.form-group').show();
+                $("#hosting_location").closest('.form-group').show();  // Show hosting location if system is supported
+                $('#funding_details').closest('.form-group').show();  // Show funding details if system is supported
+                $("#system_launch_date").closest('.form-group').show();  // Show system launch date if system is supported
+                
             } else {
                 $('#system_name').closest('.form-group').hide();
+                $("#hosting_location").closest('.form-group').hide();  // Hide hosting location if system is not supported
+                $("#system_launch_date").closest('.form-group').hide();  // Hide system launch date if system is not supported
+                $("#system_version").closest('.form-group').hide();
+                $("#system_last_update").closest('.form-group').hide();
+                $("#system_target_uptime").closest('.form-group').hide();
+                $("#system_actual_uptime").closest('.form-group').hide();  // Fixed the method call
+                $("#system_integrated").closest('.form-group').hide();
+                $('#funding_details').closest('.form-group').hide();  // Hide funding details if system is not supported
             }
 
             // Toggle integrated systems

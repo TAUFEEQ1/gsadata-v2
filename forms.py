@@ -65,13 +65,14 @@ class ServiceForm(FlaskForm):
     support_social_media = BooleanField(
         'Is there a social media available for users to access help related to the specific government service? (Yes, No)', default=False)
 
-    access_mode = SelectField('How is this service accessed by users? (select any of the options; Digital Only, Physical only or both online and physical)',
+    access_mode = SelectField('How is this service accessed by users? (select any of the options; Digital Only, Physical Only or Both)',
                               choices=[
                                   ('Digital Only', 'Digital Only'),
                                   ('Physical Only', 'Physical Only'),
                                   ('Both', 'Both')
                               ],
                               validators=[DataRequired()],
+                              render_kw={"class": "radio-group"}
                               )
     access_website = BooleanField(
         'Is the service available on a website? (Yes, No)', default=False)
@@ -88,6 +89,10 @@ class ServiceForm(FlaskForm):
     supported_by_it_system = BooleanField(
         'Is the service supported by an IT system? (Yes, No)', default=False)
 
+    hosting_location = StringField(
+        'Where is the IT system hosted? (e.g., Cloud, On-premise, Hybrid)', validators=[Optional()])
+    funding_details = StringField(
+        'What is the funding source for the IT system? (e.g., Government, Private, Donor-funded)', validators=[Optional()])
     system_name = StringField(
         'What is the name of the IT system that supports this service?', validators=[Optional()])
     system_launch_date = StringField(
