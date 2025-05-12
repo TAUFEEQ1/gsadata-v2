@@ -508,6 +508,7 @@
                 $("#hosting_location").closest('.form-group').show();  // Show hosting location if system is supported
                 $('#funding_details').closest('.form-group').show();  // Show funding details if system is supported
                 $("#system_launch_date").closest('.form-group').show();  // Show system launch date if system is supported
+                $("#complies_with_standards").closest('.form-group').show();  // Show complies with standards if system is supported
                 
             } else {
                 $('#system_name').closest('.form-group').hide();
@@ -519,6 +520,7 @@
                 $("#system_actual_uptime").closest('.form-group').hide();  // Fixed the method call
                 $("#system_integrated").closest('.form-group').hide();
                 $('#funding_details').closest('.form-group').hide();  // Hide funding details if system is not supported
+                $("#complies_with_standards").closest('.form-group').hide();  // Hide complies with standards if system is not supported
             }
 
             // Toggle integrated systems
