@@ -290,6 +290,25 @@
                                 {{ form.support_available.label(class="form-check-label") }}
                             </div>
 
+                            <div class="form-group">
+                                {{ form.support_available_via.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {% for subfield in form.support_available_via %}
+                                    <div class="form-check"></div>
+                                        <input type="checkbox" class="form-check-input" id="{{ subfield.id }}" name="{{ subfield.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.support_available_via.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.support_available_via.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
 
                         </div>
                         <div class="tab-pane fade pt-3" id="access" role="tabpanel" aria-labelledby="access-tab">
