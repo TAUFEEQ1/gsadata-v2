@@ -163,5 +163,23 @@ class ServiceForm(FlaskForm):
         if self.system_integrated.data and not self.integrated_systems.data:
             self.integrated_systems.errors.append('This field is required when "System Integrated" is selected.')
             return False
+        
+        # Conditional validation if 'supported_by_it_system' is True
+        if self.supported_by_it_system.data:
+            if not self.system_name.data:
+                self.system_name.errors.append('This field is required when "Supported by IT System" is selected.')
+                return False
+            
+            if not self.hosting_location.data:
+                self.hosting_location.errors.append('This field is required when "Supported by IT System" is selected.')
+                return False
+            if not self.funding_details.data:
+                self.funding_details.errors.append('This field is required when "Supported by IT System" is selected.')
+                return False
+        
+        # Conditional validation for 'support_available_via' if 'support_available' is True
+        if self.support_available.data and not self.support_available_via.data:
+            self.support_available_via.errors.append('This field is required when "Support Available" is selected.')
+            return False
 
         return True
