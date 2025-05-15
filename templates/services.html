@@ -495,15 +495,14 @@
                         <div class="tab-pane fade pt-3" id="system-details" role="tabpanel" aria-labelledby="system-details-tab">
                             <div class="form-group">
                                 {{ form.supported_by_it_system.label(class="form-label") }}
-                                <span class="text-danger">*</span>
-                                {% for subfield in form.supported_by_it_system %}
-                                    <div class="form-check">
+                                <div class="form-check form-check-inline">
+                                    {% for subfield in form.supported_by_it_system %}
                                         <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.supported_by_it_system.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
                                         <label class="form-check-label" for="{{ subfield.id }}">
                                             {{ subfield.label.text }}
                                         </label>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                                 {% if form.supported_by_it_system.errors %}
                                     <div class="text-danger">
                                         {% for error in form.supported_by_it_system.errors %}
@@ -567,10 +566,23 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="form-group form-check">
-                                {{ form.complies_with_standards(class="form-check-input") }}
-                                <span class="text-danger">*</span>
-                                {{ form.complies_with_standards.label(class="form-check-label") }}
+                            <div class="form-group">
+                                {{ form.complies_with_standards.label(class="form-label") }}
+                                {% for subfield in form.complies_with_standards %}
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.complies_with_standards.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.complies_with_standards.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.complies_with_standards.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.standards_details.label(class="form-label") }}
@@ -584,10 +596,25 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="form-group form-check">
-                                {{ form.system_integrated(class="form-check-input") }}
-                                <span class="text-danger">*</span>
-                                {{ form.system_integrated.label(class="form-check-label") }}
+                            <div class="form-group">
+                                {{ form.system_integrated.label(class="form-label") }}
+                                <div class="form-check form-check-inline">
+                                    {% for subfield in form.system_integrated %}
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.system_integrated.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                            <label class="form-check-label" for="{{ subfield.id }}">
+                                                {{ subfield.label.text }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form.system_integrated.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.system_integrated.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.integrated_systems.label(class="form-label") }}
@@ -601,10 +628,23 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="form-group form-check">
-                                {{ form.planned_automation(class="form-check-input") }}
-                                <span class="text-danger">*</span>
-                                {{ form.planned_automation.label(class="form-check-label") }}
+                            <div class="form-group">
+                                {{ form.planned_automation.label(class="form-label") }}
+                                {% for subfield in form.planned_automation %}
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.planned_automation.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.planned_automation.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.planned_automation.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="tab-pane fade pt-3" id="remarks" role="tabpanel" aria-labelledby="remarks-tab">
@@ -650,12 +690,13 @@
                 $("#system_last_update").closest('.form-group').show();
                 $("#system_target_uptime").closest('.form-group').show();
                 $("#system_actual_uptime").closest('.form-group').show();  // Fixed the method call
-                $("#system_integrated").closest('.form-group').show();
+                $("input[name='system_integrated']").closest('.form-group').show(); // Show system integrated if system is supported
                 $("#hosting_location").closest('.form-group').show();  // Show hosting location if system is supported
                 $('#funding_details').closest('.form-group').show();  // Show funding details if system is supported
                 $("#system_launch_date").closest('.form-group').show();  // Show system launch date if system is supported
-                $("#complies_with_standards").closest('.form-group').show();  // Show complies with standards if system is supported
-                
+                $("input[name='complies_with_standards']").closest('.form-group').show();  // Show complies with standards if system is supported
+                $("#planned_automation").closest('.form-group').hide();  // Hide planned automation if system is supported
+
             } else {
                 $('#system_name').closest('.form-group').hide();
                 $("#hosting_location").closest('.form-group').hide();  // Hide hosting location if system is not supported
@@ -664,9 +705,10 @@
                 $("#system_last_update").closest('.form-group').hide();
                 $("#system_target_uptime").closest('.form-group').hide();
                 $("#system_actual_uptime").closest('.form-group').hide();  // Fixed the method call
-                $("#system_integrated").closest('.form-group').hide();
+                $("input[name='system_integrated']").closest('.form-group').hide(); // Hide system integrated if system is not supported
                 $('#funding_details').closest('.form-group').hide();  // Hide funding details if system is not supported
-                $("#complies_with_standards").closest('.form-group').hide();  // Hide complies with standards if system is not supported
+                $("input[name='complies_with_standards']").closest('.form-group').hide();  // Hide complies with standards if system is not supported
+                $("#planned_automation").closest('.form-group').show();  // Show planned automation if system is not supported
             }
 
             // Toggle integrated systems
@@ -715,6 +757,8 @@
         $('input[name="has_kpi"]').on('change', toggleConditionalFields);
         $('input[name="customer_satisfaction_measured"]').on('change', toggleConditionalFields);
         $('input[name="support_available"]').on('change', toggleConditionalFields);
+        // supported by it system
+        $('input[name="supported_by_it_system"]').on('change',toggleConditionalFields);
     });
 </script>
 </body>
