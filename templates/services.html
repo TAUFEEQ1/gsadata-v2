@@ -226,10 +226,24 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="form-group form-check">
-                                {{ form.has_kpi(class="form-check-input") }}
+                            <div class="form-group">
+                                {{ form.has_kpi.label(class="form-label") }}
                                 <i class="fas fa-info-circle text-primary" data-toggle="tooltip" data-placement="right" title="{{ form.has_kpi.description }}"></i>
-                                {{ form.has_kpi.label(class="form-check-label") }}
+                                {% for subfield in form.has_kpi %}
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.has_kpi.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.has_kpi.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.has_kpi.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.kpi_details.label(class="form-label") }}
@@ -265,10 +279,23 @@
                                 {{ form.users_male.label(class="form-label") }}
                                 {{ form.users_male(class="form-control") }}
                             </div>
-                            <div class="form-group form-check">
-                                {{ form.customer_satisfaction_measured(class="form-check-input") }}
-                                <span class="text-danger">*</span>
-                                {{ form.customer_satisfaction_measured.label(class="form-check-label") }}
+                            <div class="form-group">
+                                {{ form.customer_satisfaction_measured.label(class="form-label") }}
+                                {% for subfield in form.customer_satisfaction_measured %}
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.customer_satisfaction_measured.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.customer_satisfaction_measured.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.customer_satisfaction_measured.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.customer_satisfaction_rating.label(class="form-label") }}
@@ -284,10 +311,23 @@
                             </div>
                         </div>
                         <div class="tab-pane fade pt-3" id="support" role="tabpanel" aria-labelledby="support-tab">
-                            <div class="form-group form-check">
-                                {{ form.support_available(class="form-check-input") }}
-                                <span class="text-danger">*</span>
-                                {{ form.support_available.label(class="form-check-label") }}
+                            <div class="form-group">
+                                {{ form.support_available.label(class="form-label") }}
+                                {% for subfield in form.support_available %}
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.support_available.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.support_available.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.support_available.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
 
                             <div class="form-group" data-checkGroup-Id="support_available_via">
@@ -358,12 +398,26 @@
                             </div>
                         </div>
                         <div class="tab-pane fade pt-3" id="system-details" role="tabpanel" aria-labelledby="system-details-tab">
-                            <div class="form-group form-check">
-                                {{ form.supported_by_it_system(class="form-check-input") }}
+                            <div class="form-group">
+                                {{ form.supported_by_it_system.label(class="form-label") }}
                                 <span class="text-danger">*</span>
-                                {{ form.supported_by_it_system.label(class="form-check-label") }}
+                                {% for subfield in form.supported_by_it_system %}
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="{{ subfield.id }}" name="{{ form.supported_by_it_system.name }}" value="{{ subfield.data }}" {% if subfield.checked %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ subfield.id }}">
+                                            {{ subfield.label.text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                {% if form.supported_by_it_system.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.supported_by_it_system.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
-                
+            
                             <div class="form-group">
                                 {{ form.system_name.label(class="form-label") }}
                                 <span class="text-danger">*</span>
@@ -485,15 +539,16 @@
 
         // Function to toggle visibility of fields based on conditions
         function toggleConditionalFields() {
+            
             // Toggle KPI details
-            if ($('#has_kpi').is(':checked')) {
+            if ($('input[name="has_kpi"]:checked').val() === 'Yes') {
                 $('#kpi_details').closest('.form-group').show();
             } else {
                 $('#kpi_details').closest('.form-group').hide();
             }
 
             // Toggle system name
-            if ($('#supported_by_it_system').is(':checked')) {
+            if ($('input[name="supported_by_it_system"]:checked').val() === 'Yes') {
                 $('#system_name').closest('.form-group').show();
                 $("#system_launch_date").closest('.form-group').show();
                 $("#system_version").closest('.form-group').show();
@@ -535,7 +590,7 @@
             }
 
             // Toggle customer satisfaction rating
-            if ($('#customer_satisfaction_measured').is(':checked')) {
+            if ($('input[name="customer_satisfaction_measured"]:checked').val() === 'Yes') {
                 $('#customer_satisfaction_rating').closest('.form-group').show();
             } else {
                 $('#customer_satisfaction_rating').closest('.form-group').hide();
@@ -549,7 +604,7 @@
             }
 
             // Toggle support details
-            if($("#support_available").is(':checked')) {
+            if ($('input[name="support_available"]:checked').val() === 'Yes') {
                 $('[data-checkgroup-id="support_available_via"]').closest('.form-group').show();
             } else {
                 $('[data-checkgroup-id="support_available_via"]').closest('.form-group').hide();
@@ -560,8 +615,11 @@
         toggleConditionalFields();
 
         // Event listeners for changes
-        $('#has_kpi, #supported_by_it_system, #system_integrated, #customer_satisfaction_measured, #complies_with_standards, #support_available').on('change', toggleConditionalFields);
+        $('#supported_by_it_system, #system_integrated, #customer_satisfaction_measured, #complies_with_standards, #support_available').on('change', toggleConditionalFields);
         $('input[name="interaction_category"]').on('change', toggleConditionalFields);
+        $('input[name="has_kpi"]').on('change', toggleConditionalFields);
+        $('input[name="customer_satisfaction_measured"]').on('change', toggleConditionalFields);
+        $('input[name="support_available"]').on('change', toggleConditionalFields);
     });
 </script>
 </body>

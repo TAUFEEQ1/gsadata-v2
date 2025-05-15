@@ -136,6 +136,7 @@ def add_service(signed_url):
         form = ServiceForm()
 
         if form.validate_on_submit():
+            
             service = Service(
                 entity_id=entity.id,
                 service_name=form.service_name.data,
@@ -144,40 +145,36 @@ def add_service(signed_url):
                 g2g_beneficiary_count=form.g2g_beneficiary_count.data,
                 geographic_reach=form.geographic_reach.data,
                 process_flow=form.process_flow.data,
-                has_kpi=form.has_kpi.data,
+                has_kpi=(form.has_kpi.data == 'Yes'),
                 kpi_details=form.kpi_details.data,
                 standard_duration=form.standard_duration.data,
                 actual_duration=form.actual_duration.data,
                 users_total=form.users_total.data,
                 users_female=form.users_female.data,
                 users_male=form.users_male.data,
-                customer_satisfaction_measured=form.customer_satisfaction_measured.data,
+                customer_satisfaction_measured=(form.customer_satisfaction_measured.data == 'Yes'),
                 customer_satisfaction_rating=form.customer_satisfaction_rating.data,
-                support_available=form.support_available.data,
-                support_call_center=form.support_call_center.data,
-                support_help_desk=form.support_help_desk.data,
-                support_online_chat=form.support_online_chat.data,
-                support_email=form.support_email.data,
-                support_social_media=form.support_social_media.data,
+                support_available=(form.support_available.data == 'Yes'),
+                support_available_via=','.join(form.support_available_via.data) if form.support_available_via.data else None,
                 access_mode=form.access_mode.data,
-                access_website=form.access_website.data,
-                access_mobile_app=form.access_mobile_app.data,
-                access_ussd=form.access_ussd.data,
-                access_physical_office=form.access_physical_office.data,
-                requires_internet=form.requires_internet.data,
-                self_service_available=form.self_service_available.data,
-                supported_by_it_system=form.supported_by_it_system.data,
+                access_website=(form.access_website.data == 'Yes'),
+                access_mobile_app=(form.access_mobile_app.data == 'Yes'),
+                access_ussd=(form.access_ussd.data == 'Yes'),
+                access_physical_office=(form.access_physical_office.data == 'Yes'),
+                requires_internet=(form.requires_internet.data == 'Yes'),
+                self_service_available=(form.self_service_available.data == 'Yes'),
+                supported_by_it_system=(form.supported_by_it_system.data == 'Yes'),
                 system_name=form.system_name.data,
                 system_launch_date=form.system_launch_date.data,
                 system_version=form.system_version.data,
                 system_last_update=form.system_last_update.data,
                 system_target_uptime=form.system_target_uptime.data,
                 system_actual_uptime=form.system_actual_uptime.data,
-                complies_with_standards=form.complies_with_standards.data,
+                complies_with_standards=(form.complies_with_standards.data == 'Yes'),
                 standards_details=form.standards_details.data,
-                system_integrated=form.system_integrated.data,
+                system_integrated=(form.system_integrated.data == 'Yes'),
                 integrated_systems=form.integrated_systems.data,
-                planned_automation=form.planned_automation.data,
+                planned_automation=(form.planned_automation.data == 'Yes'),
                 comments=form.comments.data
             )
 
@@ -188,11 +185,9 @@ def add_service(signed_url):
         else:
             return render_template('services.html', entity=entity, services=services, signed_url=signed_url, form=form)
 
-    form  = ServiceForm()
+    form = ServiceForm()
 
-
-    return render_template('services.html', entity=entity, services=services,signed_url=signed_url, form=form)
-
+    return render_template('services.html', entity=entity, services=services, signed_url=signed_url, form=form)
 
 
 @app.route('/thank_you')
