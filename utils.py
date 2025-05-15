@@ -19,8 +19,8 @@ def validate_signed_url(signed_url):
     try:
         # Decode the signed URL token
         serializer = itsdangerous.URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-         # Set expiry time to 30 days (in seconds)
-        expires_in = 60 * 60 * 24 * 30  # 30 days
+        # Set expiry time to 7 days (in seconds)
+        expires_in = 60 * 60 * 24 * 7  # 7 days
         # expires_in = 1 * 60 # 1 minute for testing
         entity_name = serializer.loads(signed_url, salt='entity-salt', max_age=expires_in)  # Specify salt and max_age for validation
         return entity_name
