@@ -712,7 +712,7 @@
             }
 
             // Toggle integrated systems
-            if ($('#system_integrated').is(':checked')) {
+            if ($('input[name="system_integrated"]:checked').val() === 'Yes') {
                 $('#integrated_systems').closest('.form-group').show();
             } else {
                 $('#integrated_systems').closest('.form-group').hide();
@@ -734,7 +734,7 @@
             }
 
             // Toggle standards details
-            if ($('#complies_with_standards').is(':checked')) {
+            if ($('input[name="complies_with_standards"]:checked').val() === 'Yes') {
                 $('#standards_details').closest('.form-group').show();
             } else {
                 $('#standards_details').closest('.form-group').hide();
@@ -752,13 +752,17 @@
         toggleConditionalFields();
 
         // Event listeners for changes
-        $('#supported_by_it_system, #system_integrated, #customer_satisfaction_measured, #complies_with_standards, #support_available').on('change', toggleConditionalFields);
+        $('#complies_with_standards, #support_available').on('change', toggleConditionalFields);
         $('input[name="interaction_category"]').on('change', toggleConditionalFields);
         $('input[name="has_kpi"]').on('change', toggleConditionalFields);
         $('input[name="customer_satisfaction_measured"]').on('change', toggleConditionalFields);
         $('input[name="support_available"]').on('change', toggleConditionalFields);
         // supported by it system
-        $('input[name="supported_by_it_system"]').on('change',toggleConditionalFields);
+        $('input[name="supported_by_it_system"]').on('change', toggleConditionalFields);
+        // system integrated
+        $('input[name="system_integrated"]').on('change', toggleConditionalFields);
+        // complies with standards
+        $('input[name="complies_with_standards"]').on('change', toggleConditionalFields);
     });
 </script>
 </body>
