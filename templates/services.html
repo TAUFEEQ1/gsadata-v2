@@ -772,9 +772,9 @@
                 $("#system_launch_date").closest('.form-group').show();  // Show system launch date if system is supported
                 $("input[name='complies_with_standards']").closest('.form-group').show();  // Show complies with standards if system is supported
                 $("#planned_automation").closest('.form-group').hide();  // Hide planned automation if system is supported
-                $("input[name='system_vendor']").closest('.form-group').show();  // Show system vendor if system is supported
-                $("input[name='system_ownership']").closest('.form-group').show();  // Show system ownership if system is supported
-                $("input[name='system_type']").closest('.form-group').show();  // Show system type if system is supported
+                $("#system_vendor").closest('.form-group').show();  // Show system vendor if system is supported
+                $("#system_ownership").closest('.form-group').show();  // Show system ownership if system is supported
+                $("#system_type").closest('.form-group').show();  // Show system type if system is supported
 
             } else {
                 $('#system_name').closest('.form-group').hide();
@@ -788,9 +788,9 @@
                 $('#funding_details').closest('.form-group').hide();  // Hide funding details if system is not supported
                 $("input[name='complies_with_standards']").closest('.form-group').hide();  // Hide complies with standards if system is not supported
                 $("#planned_automation").closest('.form-group').show();  // Show planned automation if system is not supported
-                $("input[name='system_vendor']").closest('.form-group').hide();  // Hide system vendor if system is not supported
-                $("input[name='system_ownership']").closest('.form-group').hide();  // Hide system ownership if system is not supported
-                $("input[name='system_type']").closest('.form-group').hide();  // Hide system type if system is not supported
+                $("#system_vendor").closest('.form-group').hide();  // Hide system vendor if system is not supported
+                $("#system_ownership").closest('.form-group').hide();  // Hide system ownership if system is not supported
+                $("#system_type").closest('.form-group').hide();  // Hide system type if system is not supported
             }
 
             // Toggle integrated systems
