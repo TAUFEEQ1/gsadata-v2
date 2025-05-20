@@ -87,6 +87,11 @@ class ServiceForm(FlaskForm):
                               validators=[DataRequired()],
                               render_kw={"class": "radio-group"}
                               )
+    offices_count = IntegerField(
+        'How many offices or locations (including HQ) does the entity have to support the users?',
+        validators=[Optional(), NumberRange(min=0, message="Please enter a positive number")]
+    )
+
     access_website = RadioField(
         'Is the service available on a website? (Yes, No)',
         choices=[('Yes', 'Yes'), ('No', 'No')],
@@ -168,6 +173,12 @@ class ServiceForm(FlaskForm):
     def validate(self, extra_validators=None):
         if not super(ServiceForm, self).validate(extra_validators=extra_validators):
             return False
+
+        # Conditional validation for 'offices_count' if 'access_mode' is 'Physical Only'
+        if self.access_mode.data == 'Physical Only':
+            if not self.offices_count.data or self.offices_count.data <= 0:
+                self.offices_count.errors.append('Offices count must be greater than 0 when access mode is Physical Only.')
+                return False
 
         # Conditional validation for 'kpi_details' if 'has_kpi' is True
         if self.has_kpi.data == 'Yes' and not self.kpi_details.data:

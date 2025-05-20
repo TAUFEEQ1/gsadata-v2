@@ -96,6 +96,8 @@ class Service(db.Model):
 
     access_mode = db.Column(db.String(50), nullable=True)  # e.g., Digital only, Physical only, Both
 
+    offices_count = db.Column(db.Integer, nullable=True, comment="Number of offices or locations (including HQ) supporting users")
+
     access_website = db.Column(db.Boolean, default=False)
     access_mobile_app = db.Column(db.Boolean, default=False)
     access_ussd = db.Column(db.Boolean, default=False)
