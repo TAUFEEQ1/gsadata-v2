@@ -686,7 +686,11 @@
 
         // Function to toggle visibility of fields based on conditions
         function toggleConditionalFields() {
-            
+            if ($('input[name="access_mode"]:checked').val() === 'Physical Only') {
+                $('#offices_count').closest('.form-group').show();
+            } else {
+                $('#offices_count').closest('.form-group').hide();
+            }
             // Toggle KPI details
             if ($('input[name="has_kpi"]:checked').val() === 'Yes') {
                 $('#kpi_details').closest('.form-group').show();
@@ -775,6 +779,8 @@
         $('input[name="system_integrated"]').on('change', toggleConditionalFields);
         // complies with standards
         $('input[name="complies_with_standards"]').on('change', toggleConditionalFields);
+        // access mode
+        $('input[name="access_mode"]').on('change', toggleConditionalFields);
     });
 </script>
 </body>
