@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask import render_template, redirect, url_for, request, flash
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.actions import action
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import NotFound
@@ -71,6 +72,16 @@ class EntityModelView(ModelView):
                 model.signed_service_link = url_for('add_service', signed_url=generate_signed_url(sanitize_name))
         # Call the parent class's method to ensure the model is saved
         return super(EntityModelView, self).on_model_change(form, model, is_created)
+
+    @action('regenerate_link', 'Regenerate Link', 'Are you sure you want to regenerate the link for selected entities?')
+    def action_regenerate_link(self, ids):
+        count = 0
+        for entity in Entity.query.filter(Entity.id.in_(ids)).all():
+            sanitize_name = entity.name.lower().replace(" ", "_")
+            entity.signed_service_link = url_for('add_service', signed_url=generate_signed_url(sanitize_name))
+            count += 1
+        db.session.commit()
+        flash(f"Regenerated link for {count} entities.", "success")
 
     def is_accessible(self):
         """Only allow access for admins."""
