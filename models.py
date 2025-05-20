@@ -107,6 +107,11 @@ class Service(db.Model):
     self_service_available = db.Column(db.Boolean, default=False)
 
     supported_by_it_system = db.Column(db.Boolean, default=False)
+    
+    system_vendor = db.Column(db.String(255), nullable=True, comment="Name of the vendor who supplied the system")
+    system_ownership = db.Column(db.String(50), nullable=True, comment="Who owns the rights to the system? (Vendor, Govt, Both)")
+    system_type = db.Column(db.String(50), nullable=True, comment="Is the system bespoke or off-the-shelf?")
+
     system_name = db.Column(db.String(255), nullable=True)
     system_launch_date = db.Column(db.String(20), nullable=True)  # dd/mm/yyyy
     system_version = db.Column(db.String(50), nullable=True)

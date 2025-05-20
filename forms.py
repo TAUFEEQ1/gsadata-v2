@@ -132,6 +132,32 @@ class ServiceForm(FlaskForm):
         'Where is the IT system hosted? (e.g., Cloud, On-premise, Hybrid)', validators=[Optional()])
     funding_details = StringField(
         'What is the funding source for the IT system? (e.g., Government, Private, Donor-funded)', validators=[Optional()])
+    
+    system_vendor = StringField(
+        'Who is the vendor who supplied the system?', validators=[Optional()],
+        description="Name of the vendor who supplied the system"
+    )
+    
+    system_ownership = SelectField(
+        'Who owns the rights to the system?',
+        choices=[
+            ('Vendor', 'Vendor'),
+            ('Govt', 'Government'),
+            ('Both', 'Both')
+        ],
+        validators=[Optional()],
+        description="Who owns the rights to the system? (Vendor, Govt, Both)"
+    )
+    system_type = SelectField(
+        'Is the system bespoke or off-the-shelf?',
+        choices=[
+            ('Bespoke', 'Bespoke'),
+            ('Off-the-shelf', 'Off-the-shelf')
+        ],
+        validators=[Optional()],
+        description="Is the system bespoke or off-the-shelf?"
+    )
+
     system_name = StringField(
         'What is the name of the IT system that supports this service?', validators=[Optional()])
     system_launch_date = StringField(
