@@ -128,8 +128,16 @@ class ServiceForm(FlaskForm):
         default='No'
     )
 
-    hosting_location = StringField(
-        'Where is the IT system hosted? (e.g., Cloud, On-premise, Hybrid)', validators=[Optional()])
+    hosting_location = SelectField(
+        'Where is the IT system hosted? (select one)',
+        choices=[
+            ('Cloud', 'Cloud'),
+            ('On-premise', 'On-premise'),
+            ('Hybrid', 'Hybrid')
+        ],
+        validators=[Optional()]
+    )
+    
     funding_details = StringField(
         'What is the funding source for the IT system? (e.g., Government, Private, Donor-funded)', validators=[Optional()])
     
@@ -137,7 +145,7 @@ class ServiceForm(FlaskForm):
         'Who is the vendor who supplied the system?', validators=[Optional()],
         description="Name of the vendor who supplied the system"
     )
-    
+
     system_ownership = SelectField(
         'Who owns the rights to the system?',
         choices=[
