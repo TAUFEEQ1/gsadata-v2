@@ -22,10 +22,13 @@ class ServiceForm(FlaskForm):
         'If G2G, how many entities benefit from the service? (All entities benefiting including the host entity)', validators=[Optional(), NumberRange(min=0, message="Please enter a positive number")])
     geographic_reach = SelectField('At what level is this service primarily delivered? (Targeted Geographic_Reach)?- Select one',
                                    choices=[
-                                       ('National', 'National'),
-                                       ('Regional', 'Regional'),
-                                       ('Local', 'Local'),
-                                       ('Global', 'Global'),
+                                       ('Central Government', 'Central Government'),
+                                       ('Local Government','Local Government'),
+                                       ('Regional (East Africa)', 'Regional (East Africa)'),
+                                       ('Global (Worldwide)','Global (Worldwide)'),
+                                       ('Local (Internal to the entity only)','Local (Internal to the entity only)'),
+                                       ('Sub County','Sub County'),
+                                       ('Parish', 'Parish'),
                                    ],
                                    validators=[Optional()])
     process_flow = TextAreaField(
