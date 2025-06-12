@@ -4,7 +4,7 @@ from utils import generate_signed_url
 from forms import ServiceForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, Response
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.actions import action
@@ -13,6 +13,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import NotFound
 import click
 import os
+import csv
+import io
+from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -59,6 +62,87 @@ class AdminModelView(ModelView):
         return current_user.is_authenticated
     
 
+class ServiceModelView(ModelView):
+    # Configure list view
+    list_template = 'admin/model/list.html'
+    can_export = True
+    export_max_rows = 1000
+    
+    @action('export_selected_csv', 'Export Selected to CSV', 'Export selected services to CSV?')
+    def action_export_selected_csv(self, ids):
+        """Export selected services with entity data as CSV"""
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Write CSV header
+        headers = [
+            'Entity ID', 'Entity Name', 'Entity Category', 'Entity Sector',
+            'Contact Name', 'Contact Position', 'Contact Phone', 'Contact Email',
+            'Service ID', 'Service Name', 'Service Description', 'Interaction Category',
+            'G2G Beneficiary Count', 'Geographic Reach', 'Process Flow',
+            'Has KPI', 'KPI Details', 'Standard Duration', 'Actual Duration',
+            'Users Total', 'Users Female', 'Users Male',
+            'Customer Satisfaction Measured', 'Customer Satisfaction Rating',
+            'Support Available', 'Support Available Via', 'Access Mode', 'Offices Count',
+            'Access Website', 'Access Mobile App', 'Access USSD', 'Access Physical Office',
+            'Requires Internet', 'Self Service Available', 'Supported by IT System',
+            'System Vendor', 'System Ownership', 'System Type',
+            'System Name', 'System Launch Date', 'System Version', 'System Last Update',
+            'System Target Uptime', 'System Actual Uptime', 'Hosting Location', 'Funding Details',
+            'Complies with Standards', 'Standards Details', 'System Integrated',
+            'Integrated Systems', 'Planned Automation', 'Comments'
+        ]
+        writer.writerow(headers)
+        
+        # Query selected services with their related entities
+        services = db.session.query(Service, Entity).join(Entity, Service.entity_id == Entity.id).filter(Service.id.in_(ids)).all()
+        
+        # Write data rows
+        for service, entity in services:
+            row = [
+                entity.id, entity.name, entity.category, entity.sector,
+                entity.contact_name, entity.contact_position, entity.contact_phone, entity.contact_email,
+                service.id, service.service_name, service.description, service.interaction_category,
+                service.g2g_beneficiary_count, service.geographic_reach, service.process_flow,
+                'Yes' if service.has_kpi else 'No', service.kpi_details,
+                service.standard_duration, service.actual_duration,
+                service.users_total, service.users_female, service.users_male,
+                'Yes' if service.customer_satisfaction_measured else 'No', service.customer_satisfaction_rating,
+                'Yes' if service.support_available else 'No', service.support_available_via,
+                service.access_mode, service.offices_count,
+                'Yes' if service.access_website else 'No',
+                'Yes' if service.access_mobile_app else 'No',
+                'Yes' if service.access_ussd else 'No',
+                'Yes' if service.access_physical_office else 'No',
+                'Yes' if service.requires_internet else 'No',
+                'Yes' if service.self_service_available else 'No',
+                'Yes' if service.supported_by_it_system else 'No',
+                service.system_vendor, service.system_ownership, service.system_type,
+                service.system_name, service.system_launch_date, service.system_version,
+                service.system_last_update, service.system_target_uptime, service.system_actual_uptime,
+                service.hosting_location, service.funding_details,
+                'Yes' if service.complies_with_standards else 'No', service.standards_details,
+                'Yes' if service.system_integrated else 'No', service.integrated_systems,
+                'Yes' if service.planned_automation else 'No', service.comments
+            ]
+            writer.writerow(row)
+        
+        # Create the response
+        output.seek(0)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"gsa_services_selected_{timestamp}.csv"
+        
+        return Response(
+            output.getvalue(),
+            mimetype='text/csv',
+            headers={'Content-Disposition': f'attachment; filename={filename}'}
+        )
+
+    def is_accessible(self):
+        """Only allow access for admins."""
+        return current_user.is_authenticated
+
+
 class EntityModelView(ModelView):
     form_columns = ['name', 'category', 'sector', 'contact_name', 'contact_position', 'contact_phone', 'contact_email']
 
@@ -91,7 +175,7 @@ class EntityModelView(ModelView):
 admin = Admin(app, name='GSA Data Collection Tool - Admin', template_mode='bootstrap3')
 admin.add_view(AdminModelView(User, db.session))
 admin.add_view(EntityModelView(Entity, db.session))
-admin.add_view(AdminModelView(Service, db.session))
+admin.add_view(ServiceModelView(Service, db.session))
 
 # Login Manager
 @login_manager.user_loader
@@ -208,6 +292,82 @@ def thank_you():
 @app.route('/expired')
 def expired():
     return render_template('expired_link.html')
+
+@app.route('/admin/export_csv')
+@login_required
+def export_csv():
+    """Export all services with entity data as CSV"""
+    if not current_user.is_authenticated:
+        flash("You must be logged in to access this feature.", "danger")
+        return redirect(url_for('login'))
+    
+    # Create a string buffer to write CSV data
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Write CSV header
+    headers = [
+        'Entity ID', 'Entity Name', 'Entity Category', 'Entity Sector',
+        'Contact Name', 'Contact Position', 'Contact Phone', 'Contact Email',
+        'Service ID', 'Service Name', 'Service Description', 'Interaction Category',
+        'G2G Beneficiary Count', 'Geographic Reach', 'Process Flow',
+        'Has KPI', 'KPI Details', 'Standard Duration', 'Actual Duration',
+        'Users Total', 'Users Female', 'Users Male',
+        'Customer Satisfaction Measured', 'Customer Satisfaction Rating',
+        'Support Available', 'Support Available Via', 'Access Mode', 'Offices Count',
+        'Access Website', 'Access Mobile App', 'Access USSD', 'Access Physical Office',
+        'Requires Internet', 'Self Service Available', 'Supported by IT System',
+        'System Vendor', 'System Ownership', 'System Type',
+        'System Name', 'System Launch Date', 'System Version', 'System Last Update',
+        'System Target Uptime', 'System Actual Uptime', 'Hosting Location', 'Funding Details',
+        'Complies with Standards', 'Standards Details', 'System Integrated',
+        'Integrated Systems', 'Planned Automation', 'Comments'
+    ]
+    writer.writerow(headers)
+    
+    # Query services with their related entities
+    services = db.session.query(Service, Entity).join(Entity, Service.entity_id == Entity.id).all()
+    
+    # Write data rows
+    for service, entity in services:
+        row = [
+            entity.id, entity.name, entity.category, entity.sector,
+            entity.contact_name, entity.contact_position, entity.contact_phone, entity.contact_email,
+            service.id, service.service_name, service.description, service.interaction_category,
+            service.g2g_beneficiary_count, service.geographic_reach, service.process_flow,
+            'Yes' if service.has_kpi else 'No', service.kpi_details,
+            service.standard_duration, service.actual_duration,
+            service.users_total, service.users_female, service.users_male,
+            'Yes' if service.customer_satisfaction_measured else 'No', service.customer_satisfaction_rating,
+            'Yes' if service.support_available else 'No', service.support_available_via,
+            service.access_mode, service.offices_count,
+            'Yes' if service.access_website else 'No',
+            'Yes' if service.access_mobile_app else 'No',
+            'Yes' if service.access_ussd else 'No',
+            'Yes' if service.access_physical_office else 'No',
+            'Yes' if service.requires_internet else 'No',
+            'Yes' if service.self_service_available else 'No',
+            'Yes' if service.supported_by_it_system else 'No',
+            service.system_vendor, service.system_ownership, service.system_type,
+            service.system_name, service.system_launch_date, service.system_version,
+            service.system_last_update, service.system_target_uptime, service.system_actual_uptime,
+            service.hosting_location, service.funding_details,
+            'Yes' if service.complies_with_standards else 'No', service.standards_details,
+            'Yes' if service.system_integrated else 'No', service.integrated_systems,
+            'Yes' if service.planned_automation else 'No', service.comments
+        ]
+        writer.writerow(row)
+    
+    # Create the response
+    output.seek(0)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"gsa_services_export_{timestamp}.csv"
+    
+    return Response(
+        output.getvalue(),
+        mimetype='text/csv',
+        headers={'Content-Disposition': f'attachment; filename={filename}'}
+    )
 
 # Run the app
 if __name__ == '__main__':
