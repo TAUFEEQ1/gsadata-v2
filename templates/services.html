@@ -752,6 +752,7 @@
                 $("#system_vendor").closest('.form-group').show();  // Show system vendor if system is supported
                 $("#system_ownership").closest('.form-group').show();  // Show system ownership if system is supported
                 $("#system_type").closest('.form-group').show();  // Show system type if system is supported
+                $("#planned_automation").closest('.form-group').hide();  // Hide planned automation if system is supported
 
             } else {
                 $('#system_name').closest('.form-group').hide();
@@ -768,6 +769,7 @@
                 $("#system_vendor").closest('.form-group').hide();  // Hide system vendor if system is not supported
                 $("#system_ownership").closest('.form-group').hide();  // Hide system ownership if system is not supported
                 $("#system_type").closest('.form-group').hide();  // Hide system type if system is not supported
+                $("#planned_automation").closest('.form-group').show();  // Show planned automation if system is not supported
             }
 
             // Toggle integrated systems
