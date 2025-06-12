@@ -162,8 +162,8 @@ class ServiceForm(FlaskForm):
     system_type = SelectField(
         'Is the system bespoke or off-the-shelf?',
         choices=[
-            ('Bespoke', 'Bespoke'),
-            ('Off-the-shelf', 'Off-the-shelf')
+            ('Bespoke', 'Bespoke (existing solution implemented as is/existing solution customized to suit the needs of the organization)'),
+            ('Off-the-shelf', 'Off-the-shelf (solution specifically designed for the organization from scratch)')
         ],
         validators=[Optional()],
         description="Is the system bespoke or off-the-shelf?"

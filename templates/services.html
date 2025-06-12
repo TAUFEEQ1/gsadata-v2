@@ -722,7 +722,7 @@
 
         // Function to toggle visibility of fields based on conditions
         function toggleConditionalFields() {
-            if ($('input[name="access_mode"]:checked').val() === 'Physical Only') {
+            if (['Physical Only','Both'].includes($('input[name="access_mode"]:checked').val())) {
                 $('#offices_count').closest('.form-group').show();
             } else {
                 $('#offices_count').closest('.form-group').hide();
